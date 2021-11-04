@@ -62,9 +62,6 @@ lines = f.readlines()
 for line in lines:
     json_data = virustotal.get_file_report(line)
 
-    # Convert json to dictionary:
-    #json_data = json.loads(json.dumps(response))
-
     if json_data['results']['response_code'] == 1 and \
        'Fortinet' in json_data['results']['scans']:
             table_data.append([
