@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import SimpleHTTPServer
-import SocketServer
+import http.server
+import socketserver
 
 
 def start(port):
-    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-    httpd = SocketServer.TCPServer(("", port), Handler)
-    print "Webserver started at port", port
+    Handler = http.server.SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", port), Handler)
+    print("Webserver started at port", port)
     httpd.serve_forever()

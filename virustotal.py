@@ -9,7 +9,10 @@ import argparse
 import json
 import sys
 import time
-import HTML  # Install module before using HTML
+
+from keylist import vt_key as API_KEY
+import simpletable
+from customcss import css
 
 import html_gen
 import webserver
@@ -31,7 +34,6 @@ args = p.parse_args()
 # ====================================================
 
 # ============ ACCESS Virustotal.com API =============
-API_KEY = '2a11b9bed44b9580bde1033624b38d32fad0c470a8611dc5928ee8d85060745a'
 virustotal = VirusTotalPublicApi(API_KEY)
 # ====================================================
 
@@ -58,10 +60,7 @@ table_data = []
 f = open(sys.argv[1])
 lines = f.readlines()
 for line in lines:
-    response = virustotal.get_file_report(line)
-
-    # Convert json to dictionary:
-    json_data = json.loads(json.dumps(response))
+    json_data = virustotal.get_file_report(line)
 
     if json_data['results']['response_code'] == 1 and \
        'Fortinet' in json_data['results']['scans']:
@@ -91,7 +90,7 @@ for line in lines:
 
 f.close()
 
-htmltable = HTML.table(table_data, header_row=HEADER_ROW)
+htmltable = simpletable.SimpleTable(table_data, header_row=HEADER_ROW, css_class='mytable')
 # ====================================================
 
 # =============== BUILDING HTML PAGE =================
@@ -116,7 +115,10 @@ cont_end = """
 </body>
 </html>
  """
-contents = "%s %s %s" % (cont_start, htmltable, cont_end)
+
+pagecss = '<style type="text/css">\n%s\n</style>' % css
+
+contents = "%s %s %s %s" % (cont_start, pagecss, htmltable, cont_end)
 html_gen.str_to_file(contents, filename='index.html')
 # ====================================================
 
