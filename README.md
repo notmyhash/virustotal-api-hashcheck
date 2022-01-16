@@ -37,7 +37,7 @@ You will also need to supply the script with your VirusTotal API key. You can ad
 ## Usage ##
 Running script example:
 
-    python virustotal.py sample_hash_input.txt
+    python virustotal.py quick_hash_test.txt
 
 To see the results report navigate to `http://localhost:8000` in the browser.
 
